@@ -109,7 +109,8 @@ async function resizeImages(destDir: string, filenames: string[], opts: any) {
         const promises = chunks.shift().map(async (filename) => {
             const destPath = path.join(destDir, filename);
 
-            const stats = await getFileStats(destPath).catch(() => undefined);            if (stats && stats.size) {
+            const stats = await getFileStats(destPath).catch(() => undefined);
+            if (stats && stats.size) {
                 console.log(`${filename} is already resized.`);
                 return Promise.resolve();
             }
