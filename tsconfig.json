@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "dist",
+        "types": [
+            "node"
+        ],
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    },
+    "indclude": [
+        "index.ts"
+    ]
+}
