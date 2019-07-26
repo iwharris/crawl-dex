@@ -126,8 +126,6 @@ async function resizeImages(destDir: string, filenames: string[], opts: any) {
 
         await Promise.all(promises);
     }
-
-    console.log(filenames);
 }
 
 function parseArgs(args: string[]): commander.Command {
