@@ -15,8 +15,7 @@ function assertDir(dirName: string): Promise<any> {
 }
 
 function getFileStats(path: string): Promise<fs.Stats>{
-    return new Promise((resolve, reject) => fs.stat(path, (err, stats) => err ? reject(err) : resolve(stats)))
-        .catch(() => undefined);
+    return new Promise((resolve, reject) => fs.stat(path, (err, stats) => err ? reject(err) : resolve(stats)));
 }
 
 function downloadFile(uri: string, localPath: string): Promise<any> {
@@ -38,6 +37,7 @@ function downloadFile(uri: string, localPath: string): Promise<any> {
 function downloadIfNeeded(uri: string, fileName: string): Promise<any> {
     const localPath = path.join(CACHE_DIR, fileName);
     return getFileStats(localPath)
+        .catch(() => undefined)
         .then((stats) => {
             if (stats && stats.size > 0) {
                 console.log(`Skipping ${fileName}.`);
@@ -109,8 +109,7 @@ async function resizeImages(destDir: string, filenames: string[], opts: any) {
         const promises = chunks.shift().map(async (filename) => {
             const destPath = path.join(destDir, filename);
 
-            const stats = await getFileStats(destPath);
-            if (stats && stats.size) {
+            const stats = await getFileStats(destPath).catch(() => undefined);            if (stats && stats.size) {
                 console.log(`${filename} is already resized.`);
                 return Promise.resolve();
             }
