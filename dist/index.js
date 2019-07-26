@@ -123,15 +123,15 @@ function resizeImages(destDir, filenames, opts) {
 function parseArgs(args) {
     return commander_1.default
         .usage('[options]')
-        .option('--width', 'Resizes the image to fit within this width', 400)
-        .option('--height', 'Resizes the image to fit within this height', 400)
-        .option('-d --dir', 'Directory to put finished images in')
+        .option('--width <width>', 'Resizes the image to fit within this width', 400)
+        .option('--height <height>', 'Resizes the image to fit within this height', 400)
+        .option('-d --dir <destDir>', 'Directory to put finished images in')
         .parse(args);
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const args = parseArgs(process.argv);
-        const destDir = args.dir || `${args.width}x${args.height}`;
+        const destDir = args.destDir || `${args.width}x${args.height}`;
         const filenames = yield fetchImages();
         const resizeOpts = {
             width: args.width,
@@ -140,6 +140,7 @@ function main() {
             format: FILE_EXT
         };
         yield resizeImages(destDir, filenames, resizeOpts);
+        console.log(destDir);
         console.log('done');
     });
 }
