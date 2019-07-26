@@ -25,8 +25,7 @@ function assertDir(dirName) {
     return new Promise(resolve => mkdirp_1.default(dirName, resolve));
 }
 function getFileStats(path) {
-    return new Promise((resolve, reject) => fs_1.default.stat(path, (err, stats) => err ? reject(err) : resolve(stats)))
-        .catch(() => undefined);
+    return new Promise((resolve, reject) => fs_1.default.stat(path, (err, stats) => err ? reject(err) : resolve(stats)));
 }
 function downloadFile(uri, localPath) {
     return new Promise((resolve, reject) => {
@@ -46,6 +45,7 @@ function downloadFile(uri, localPath) {
 function downloadIfNeeded(uri, fileName) {
     const localPath = path_1.default.join(CACHE_DIR, fileName);
     return getFileStats(localPath)
+        .catch(() => undefined)
         .then((stats) => {
         if (stats && stats.size > 0) {
             console.log(`Skipping ${fileName}.`);
@@ -107,7 +107,7 @@ function resizeImages(destDir, filenames, opts) {
         while (chunks.length) {
             const promises = chunks.shift().map((filename) => __awaiter(this, void 0, void 0, function* () {
                 const destPath = path_1.default.join(destDir, filename);
-                const stats = yield getFileStats(destPath);
+                const stats = yield getFileStats(destPath).catch(() => undefined);
                 if (stats && stats.size) {
                     console.log(`${filename} is already resized.`);
                     return Promise.resolve();
@@ -118,7 +118,6 @@ function resizeImages(destDir, filenames, opts) {
             }));
             yield Promise.all(promises);
         }
-        console.log(filenames);
     });
 }
 function parseArgs(args) {
